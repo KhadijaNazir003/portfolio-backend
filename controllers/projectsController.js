@@ -1,4 +1,4 @@
-const Projects = require("../models/Projects")
+const Projects = require("../models/Project")
 
 // @desc    Get all projects
 // @route   GET /api/projects
