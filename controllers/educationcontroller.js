@@ -1,27 +1,138 @@
-const Education = require('../models/Education');
+const Education = require("../models/Education")
 
-exports.getAllEducation = async (req, res) => {
-  const data = await Education.find();
-  res.json(data);
-};
+// @desc    Get all education records
+// @route   GET /api/education
+// @access  Public
+const getEducation = async (req, res) => {
+  try {
+    const education = await Education.find({ isActive: true }).sort({ year: -1 })
 
-exports.getEducationById = async (req, res) => {
-  const data = await Education.findById(req.params.id);
-  res.json(data);
-};
+    res.status(200).json({
+      success: true,
+      count: education.length,
+      data: education,
+    })
+  } catch (error) {
+    console.error("Error fetching education:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch education data",
+      error: error.message,
+    })
+  }
+}
 
-exports.createEducation = async (req, res) => {
-  const newEdu = new Education(req.body);
-  await newEdu.save();
-  res.status(201).json(newEdu);
-};
+// @desc    Get single education record
+// @route   GET /api/education/:id
+// @access  Public
+const getEducationById = async (req, res) => {
+  try {
+    const education = await Education.findById(req.params.id)
 
-exports.updateEducation = async (req, res) => {
-  const updated = await Education.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updated);
-};
+    if (!education) {
+      return res.status(404).json({
+        success: false,
+        message: "Education record not found",
+      })
+    }
 
-exports.deleteEducation = async (req, res) => {
-  await Education.findByIdAndDelete(req.params.id);
-  res.status(204).send();
-};
+    res.status(200).json({
+      success: true,
+      data: education,
+    })
+  } catch (error) {
+    console.error("Error fetching education by ID:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch education record",
+      error: error.message,
+    })
+  }
+}
+
+// @desc    Create new education record
+// @route   POST /api/education
+// @access  Private (you can add auth middleware later)
+const createEducation = async (req, res) => {
+  try {
+    const education = await Education.create(req.body)
+
+    res.status(201).json({
+      success: true,
+      message: "Education record created successfully",
+      data: education,
+    })
+  } catch (error) {
+    console.error("Error creating education:", error)
+    res.status(400).json({
+      success: false,
+      message: "Failed to create education record",
+      error: error.message,
+    })
+  }
+}
+
+// @desc    Update education record
+// @route   PUT /api/education/:id
+// @access  Private
+const updateEducation = async (req, res) => {
+  try {
+    const education = await Education.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+
+    if (!education) {
+      return res.status(404).json({
+        success: false,
+        message: "Education record not found",
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Education record updated successfully",
+      data: education,
+    })
+  } catch (error) {
+    console.error("Error updating education:", error)
+    res.status(400).json({
+      success: false,
+      message: "Failed to update education record",
+      error: error.message,
+    })
+  }
+}
+
+// @desc    Delete education record
+// @route   DELETE /api/education/:id
+// @access  Private
+const deleteEducation = async (req, res) => {
+  try {
+    const education = await Education.findByIdAndUpdate(req.params.id, { isActive: false }, { new: true })
+
+    if (!education) {
+      return res.status(404).json({
+        success: false,
+        message: "Education record not found",
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Education record deleted successfully",
+    })
+  } catch (error) {
+    console.error("Error deleting education:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete education record",
+      error: error.message,
+    })
+  }
+}
+
+module.exports = {
+  getEducation,
+  getEducationById,
+  createEducation,
+  updateEducation,
+  deleteEducation,
+}
