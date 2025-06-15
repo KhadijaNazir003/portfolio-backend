@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 const Education = require("../models/Education")
-const Skills = require("../models/Skills")
-const Projects = require("../models/Projects")
+const Skills = require("../models/Skill")
+const Projects = require("../models/Project")
 
 dotenv.config()
 
