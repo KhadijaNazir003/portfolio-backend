@@ -1,4 +1,4 @@
-const Skills = require("../models/Skills")
+const Skills = require("../models/Skill")
 
 // @desc    Get all skills
 // @route   GET /api/skills
