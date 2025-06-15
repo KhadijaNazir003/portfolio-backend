@@ -1,13 +1,13 @@
 const express = require("express")
 const cors = require("cors")
 const dotenv = require("dotenv")
-const connectDB = require("./config/database")
+const connectDB = require("./config/db")
 
 // Import routes
-const educationRoutes = require("./routes/education")
-const skillsRoutes = require("./routes/skills")
-const projectsRoutes = require("./routes/projects")
-const experienceRoutes = require("./routes/experience")
+const educationRoutes = require("./routes/educationRoutes")
+const skillsRoutes = require("./routes/skillsRoutes")
+const projectsRoutes = require("./routes/projectsRoutes")
+const experienceRoutes = require("./routes/experienceRoutes")
 
 // Load environment variables
 dotenv.config()
