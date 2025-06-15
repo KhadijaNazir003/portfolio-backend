@@ -1,17 +1,18 @@
-const express = require('express');
-const router = express.Router();
+const express = require("express")
 const {
-  getAllEducation,
+  getEducation,
   getEducationById,
   createEducation,
   updateEducation,
   deleteEducation,
-} = require('../controllers/educationcontroller');
+} = require("../controllers/educationController")
 
-router.get('/', getAllEducation);
-router.get('/:id', getEducationById);
-router.post('/', createEducation);
-router.put('/:id', updateEducation);
-router.delete('/:id', deleteEducation);
+const router = express.Router()
 
-module.exports = router;
+router.get("/", getEducation)
+router.get("/:id", getEducationById)
+router.post("/", createEducation)
+router.put("/:id", updateEducation)
+router.delete("/:id", deleteEducation)
+
+module.exports = router
