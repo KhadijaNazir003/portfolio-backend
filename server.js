@@ -8,6 +8,7 @@ const educationRoutes = require("./routes/educationRoutes")
 const skillsRoutes = require("./routes/skillsRoutes")
 const projectsRoutes = require("./routes/projectsRoutes")
 const experienceRoutes = require("./routes/experienceRoutes")
+const awardRoutes = require("./routes/awardRoutes")
 
 // Load environment variables
 dotenv.config()
@@ -33,6 +34,7 @@ app.use("/api/education", educationRoutes)
 app.use("/api/skills", skillsRoutes)
 app.use("/api/projects", projectsRoutes)
 app.use("/api/experience", experienceRoutes)
+app.use("/api/awards", awardRoutes)
 
 // Health check route
 app.get("/api/health", (req, res) => {

@@ -3,6 +3,8 @@ const dotenv = require("dotenv")
 const Education = require("../models/Education")
 const Skills = require("../models/Skill")
 const Projects = require("../models/Project")
+const Experience = require("../models/Experience")
+const Awards = require("../models/Awards")
 
 dotenv.config()
 
@@ -104,7 +106,6 @@ const projectsData = [
     endDate: new Date("2021-04-01"),
     status: "Completed",
     githubUrl: "https://github.com/yourusername/fighting-game",
-    liveUrl: "https://yourgame.com",
     category: "Game Development",
     priority: 3,
     isFeatured: true,
@@ -146,10 +147,120 @@ const projectsData = [
     endDate: new Date("2021-12-01"),
     status: "Completed",
     githubUrl: "https://github.com/yourusername/taskbuddy",
-    liveUrl: "https://taskbuddy-app.com",
     category: "Mobile App",
     priority: 3,
     isFeatured: true,
+  },
+]
+
+const experienceData = [
+  {
+    title: "Marketing Intern",
+    company: "Marketing Company",
+    location: "Lahore, Pakistan",
+    startDate: new Date("2022-06-01"),
+    endDate: new Date("2022-08-31"),
+    isCurrent: false,
+    description:
+      "Assisted in developing and executing digital marketing campaigns, contributing to a 20% increase in client engagement through social media platforms.",
+    responsibilities: [
+      "Developed social media content and campaigns",
+      "Analyzed marketing metrics and performance data",
+      "Assisted in client presentations and meetings",
+      "Conducted market research and competitor analysis",
+    ],
+    achievements: [
+      "Increased client engagement by 20%",
+      "Successfully managed 5+ social media accounts",
+      "Created content that reached 10K+ users",
+    ],
+    technologies: ["Google Analytics", "Facebook Ads", "Instagram", "Canva"],
+    employmentType: "Internship",
+  },
+  {
+    title: "Research Assistant",
+    company: "ITU, Department of Computer Science",
+    location: "Lahore, Pakistan",
+    startDate: new Date("2021-09-01"),
+    endDate: new Date("2022-05-31"),
+    isCurrent: false,
+    description:
+      "Conducted literature reviews and data analysis for a study on robotics and machine learning, enhancing research methodologies and contributing to a published paper.",
+    responsibilities: [
+      "Conducted comprehensive literature reviews",
+      "Performed data analysis using statistical tools",
+      "Assisted in research paper writing and editing",
+      "Presented findings to research team",
+    ],
+    achievements: [
+      "Contributed to a published research paper",
+      "Improved research methodology efficiency by 15%",
+      "Presented research findings at department seminar",
+    ],
+    technologies: ["Python", "MATLAB", "R", "LaTeX", "Statistical Analysis"],
+    employmentType: "Part-time",
+  },
+  {
+    title: "Customer Service Representative",
+    company: "Retail Company",
+    location: "Lahore, Pakistan",
+    startDate: new Date("2020-01-01"),
+    endDate: new Date("2021-12-31"),
+    isCurrent: false,
+    description:
+      "Provided exceptional customer support, resolving inquiries and complaints, which led to a 15% improvement in customer satisfaction ratings.",
+    responsibilities: [
+      "Handled customer inquiries via phone and email",
+      "Resolved customer complaints and issues",
+      "Maintained detailed customer interaction records",
+      "Collaborated with team to improve service quality",
+    ],
+    achievements: [
+      "Improved customer satisfaction ratings by 15%",
+      "Maintained 95% customer resolution rate",
+      "Received Employee of the Month award twice",
+    ],
+    technologies: ["CRM Software", "Microsoft Office", "Live Chat Systems"],
+    employmentType: "Part-time",
+  },
+]
+
+const awardsData = [
+  {
+    title: "Certificate in Public Speaking",
+    description:
+      "Won second position in public speaking competition, developed skills to present confidently in front of diverse audiences.",
+    date: "April 2022",
+    issuer: "School Competition Committee",
+    category: "Certificate",
+    priority: 4,
+  },
+  {
+    title: "Leadership Development Program Certificate",
+    description:
+      "Participated in a school‑sponsored leadership development program covering teamwork, conflict resolution, and project management through workshops.",
+    date: "June 2023",
+    issuer: "School Leadership Program",
+    category: "Certificate",
+    priority: 3,
+  },
+  {
+    title: "Certificate of Participation in Science Fair",
+    description:
+      "Recognized for participation in the annual school science fair, presenting a project on renewable energy solutions, which fostered skills in research, experimentation, and presentation.",
+    date: "May 2024",
+    issuer: "School Science Department",
+    category: "Certificate",
+    priority: 2,
+  },
+  {
+    title: "Digital Literacy Course Certificate",
+    description:
+      "Completed a digital literacy course that covered essential skills in using technology, online research, and digital communication, preparing for academic and professional environments.",
+    date: "January 2025",
+    issuer: "Digital Learning Institute",
+    category: "Certificate",
+    priority: 1,
   },
 ]
 
@@ -159,16 +270,17 @@ const seedData = async () => {
     await Education.deleteMany({})
     await Skills.deleteMany({})
     await Projects.deleteMany({})
+    await Experience.deleteMany({})
+    await Awards.deleteMany({})
 
     // Insert new data
     const education = await Education.insertMany(educationData)
     const skills = await Skills.insertMany(skillsData)
     const projects = await Projects.insertMany(projectsData)
+    const experience = await Experience.insertMany(experienceData)
+    const awards = await Awards.insertMany(awardsData)
 
     console.log("✅ Data seeded successfully!")
-    console.log(`📚 Education records: ${education.length}`)
-    console.log(`🛠️ Skills: ${skills.length}`)
-    console.log(`💼 Projects: ${projects.length}`)
 
     process.exit(0)
   } catch (error) {
