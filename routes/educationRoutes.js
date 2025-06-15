@@ -5,7 +5,7 @@ const {
   createEducation,
   updateEducation,
   deleteEducation,
-} = require("../controllers/educationController")
+} = require("../controllers/educationcontroller")
 
 const router = express.Router()
 
