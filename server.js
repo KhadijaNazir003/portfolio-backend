@@ -1,59 +1,67 @@
-// import mongoose from "mongoose";
-// import dotenv from "dotenv";
-// dotenv.config();
+const express = require("express")
+const cors = require("cors")
+const dotenv = require("dotenv")
+const connectDB = require("./config/database")
 
-// mongoose.connect(process.env.MONGO_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// })
-// .then(() => console.log("MongoDB Connected"))
-// .catch((err) => console.error(err));
-// const express = require('express');
-// const cors = require('cors');
-// const connectDB = require('./config/db');
-// require('dotenv').config();
+// Import routes
+const educationRoutes = require("./routes/education")
+const skillsRoutes = require("./routes/skills")
+const projectsRoutes = require("./routes/projects")
+const experienceRoutes = require("./routes/experience")
 
-// const educationRoutes = require('./routes/educationRoutes');
-// // const skillRoutes = require('./routes/skillRoutes');
-// // const projectRoutes = require('./routes/projectRoutes');
-// // const experienceRoutes = require('./routes/experienceRoutes');
+// Load environment variables
+dotenv.config()
 
-// const app = express();
-// connectDB();
+const app = express()
+const PORT = process.env.PORT || 5000
 
-// // Middleware
-// app.use(cors({ origin: 'http://localhost:3000' }));
-// app.use(express.json());
-
-// // Routes
-// app.use('/api/education', educationRoutes);
-// // app.use('/api/skills', skillRoutes);
-// // app.use('/api/projects', projectRoutes);
-// // app.use('/api/experience', experienceRoutes);
-
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db'); // This will use MONGO_URI from .env
-require('dotenv').config(); // Load environment variables
-
-const educationRoutes = require('./routes/educationRoutes');
-
-const app = express();
-
-// Connect to MongoDB Atlas
-connectDB();
+// Connect to MongoDB
+connectDB()
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000' })); // Allow React frontend
-app.use(express.json()); // Parse JSON requests
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    credentials: true,
+  }),
+)
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // Routes
-app.use('/api/education', educationRoutes);
+app.use("/api/education", educationRoutes)
+app.use("/api/skills", skillsRoutes)
+app.use("/api/projects", projectsRoutes)
+app.use("/api/experience", experienceRoutes)
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Health check route
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Portfolio API is running successfully!",
+    timestamp: new Date().toISOString(),
+  })
+})
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).json({
+    success: false,
+    message: "Something went wrong!",
+    error: process.env.NODE_ENV === "development" ? err.message : "Internal Server Error",
+  })
+})
+
+// 404 handler
+app.use("*", (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  })
+})
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`)
+  console.log(`📊 Health check: http://localhost:${PORT}/api/health`)
+})
